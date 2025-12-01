@@ -227,6 +227,30 @@
             color: #78350f;
         }
 
+        /* Close Note */
+        .close-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border: 1px solid #28a745;
+            border-radius: 10px;
+            padding: 16px 24px;
+            margin-bottom: 30px;
+        }
+
+        .close-note .close-icon {
+            font-size: 24px;
+        }
+
+        .close-note p {
+            color: #155724;
+            font-size: 15px;
+            font-weight: 600;
+            margin: 0;
+        }
+
         /* Email Note */
         .email-note {
             color: #718096;
@@ -382,6 +406,11 @@
                     We're analyzing your photos to identify the people who appear most frequently. 
                     This helps us create a more accurate chronological sort.
                 </p>
+                
+                <div class="close-note">
+                    <span class="close-icon">✉️</span>
+                    <p>Feel free to close this page — we'll email you when face identification is ready!</p>
+                </div>
 
                 <div class="progress-section">
                     <div class="progress-bar-container">
@@ -455,8 +484,8 @@
         const S3_BASE_URL = 'https://order-by-age-uploads.s3.amazonaws.com';
         const FORM_BASE_URL = 'https://tjhurd711.github.io/face-identification-form/';
         const POLL_INTERVAL = 10000; // 10 seconds
-        const MAX_POLL_TIME = 20 * 60 * 1000; // 10 minutes max
-        const EXPECTED_TIME = 7 * 60 * 1000; // 5 minutes expected
+        const MAX_POLL_TIME = 10 * 60 * 1000; // 10 minutes max
+        const EXPECTED_TIME = 5 * 60 * 1000; // 5 minutes expected
 
         let pollStartTime = Date.now();
         let pollCount = 0;
