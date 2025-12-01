@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finding Familiar Faces - MemorialVideo.AI</title>
+    <link rel="icon" type="image/svg+xml" 
+          href="https://www.dropbox.com/scl/fi/7tqrvmnchu17tkatqa9l5/MemorialVideoAI-Favicon.svg?rlkey=5cj4gwyhq3frrupo1g1d3y8so&st=znzwkpy9&raw=1">
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Atkinson Hyperlegible', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #a8c5e6 0%, #c1d9f0 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #e8e8e8;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 650px;
+            width: 100%;
+            overflow: hidden;
+            border: 20px solid #1e3c72;
+        }
+
+        .header {
+            background: white;
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 3px solid #1e3c72;
+        }
+
+        .logo {
+            max-width: 350px;
+            width: 100%;
+            height: auto;
+        }
+
+        .content {
+            padding: 50px 40px;
+            text-align: center;
+            background: white;
+        }
+
+        /* Face Animation Container */
+        .animation-container {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+
+        /* Rotating circle of faces */
+        .face-orbit {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            animation: rotate 8s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .face-icon {
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+            box-shadow: 0 4px 12px rgba(30, 60, 114, 0.3);
+            animation: counter-rotate 8s linear infinite;
+        }
+
+        @keyframes counter-rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(-360deg); }
+        }
+
+        .face-icon:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%); }
+        .face-icon:nth-child(2) { top: 50%; right: 0; transform: translateY(-50%); }
+        .face-icon:nth-child(3) { bottom: 0; left: 50%; transform: translateX(-50%); }
+        .face-icon:nth-child(4) { top: 50%; left: 0; transform: translateY(-50%); }
+
+        /* Center pulsing icon */
+        .center-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        h1 {
+            color: #1e3c72;
+            font-size: 28px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #4a5568;
+            font-size: 17px;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+
+        /* Progress Section */
+        .progress-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .progress-bar-container {
+            background: #e2e8f0;
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #1e3c72 0%, #2a5298 50%, #1e3c72 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2s linear infinite;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .progress-text {
+            color: #4a5568;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .time-estimate {
+            color: #718096;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        /* Status Messages */
+        .status-message {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px 20px;
+            background: #e8f4ff;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            color: #1e3c72;
+            font-size: 15px;
+        }
+
+        .status-message .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #1e3c72;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Info Box */
+        .info-box {
+            background: #fff3cd;
+            border-left: 4px solid #f59e0b;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: left;
+            margin-bottom: 25px;
+        }
+
+        .info-box p {
+            color: #92400e;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .info-box strong {
+            color: #78350f;
+        }
+
+        /* Email Note */
+        .email-note {
+            color: #718096;
+            font-size: 14px;
+            line-height: 1.6;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .email-note a {
+            color: #1e3c72;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .email-note a:hover {
+            text-decoration: underline;
+        }
+
+        /* Ready State */
+        .ready-state {
+            display: none;
+        }
+
+        .ready-state.visible {
+            display: block;
+        }
+
+        .ready-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            color: white;
+            font-size: 40px;
+            animation: pop-in 0.5s ease-out;
+        }
+
+        @keyframes pop-in {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .continue-btn {
+            display: inline-block;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(30, 60, 114, 0.3);
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4);
+        }
+
+        /* Error State */
+        .error-state {
+            display: none;
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .error-state.visible {
+            display: block;
+        }
+
+        .error-state p {
+            color: #991b1b;
+            margin: 0;
+            font-size: 14px;
+        }
+
+        /* Footer */
+        footer {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: center;
+            color: #718096;
+            font-size: 13px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                border-width: 12px;
+            }
+
+            .content {
+                padding: 40px 25px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .animation-container {
+                width: 150px;
+                height: 150px;
+            }
+
+            .face-icon {
+                width: 38px;
+                height: 38px;
+                font-size: 18px;
+            }
+
+            .center-icon {
+                width: 55px;
+                height: 55px;
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://www.dropbox.com/scl/fi/i5ye9vg5wzfvxwyrwczq6/Untitled-940-x-600-px-1400-x-600-px.png?rlkey=rk5t9ot5gchvjcqx71lwiln1o&st=1kjskc34&raw=1" 
+                 alt="MemorialVideo.AI" 
+                 class="logo">
+        </div>
+
+        <div class="content">
+            <!-- Loading State -->
+            <div id="loadingState">
+                <div class="animation-container">
+                    <div class="face-orbit">
+                        <div class="face-icon">👤</div>
+                        <div class="face-icon">👤</div>
+                        <div class="face-icon">👤</div>
+                        <div class="face-icon">👤</div>
+                    </div>
+                    <div class="center-icon">🔍</div>
+                </div>
+
+                <h1>Finding Familiar Faces</h1>
+                <p class="subtitle">
+                    We're analyzing your photos to identify the people who appear most frequently. 
+                    This helps us create a more accurate chronological sort.
+                </p>
+
+                <div class="progress-section">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="progressBar" style="width: 10%"></div>
+                    </div>
+                    <p class="progress-text" id="progressText">Analyzing photos...</p>
+                    <p class="time-estimate" id="timeEstimate">Estimated time remaining: ~5 minutes</p>
+                </div>
+
+                <div class="status-message">
+                    <div class="spinner"></div>
+                    <span id="statusText">Scanning for faces in your photos...</span>
+                </div>
+
+                <div class="info-box">
+                    <p>
+                        <strong>What's happening?</strong><br>
+                        Our AI is scanning through your uploaded photos to find and group faces 
+                        that appear multiple times. This will allow you to identify key family 
+                        members and help us sort your photos more accurately.
+                    </p>
+                </div>
+
+                <p class="email-note">
+                    Feel free to close this page — we'll also send you an email with a link 
+                    when the analysis is complete. You can safely navigate away.
+                </p>
+            </div>
+
+            <!-- Ready State -->
+            <div id="readyState" class="ready-state">
+                <div class="ready-icon">✓</div>
+                <h1>Faces Found!</h1>
+                <p class="subtitle">
+                    We've identified the familiar faces in your photos. 
+                    Please continue to help us identify them for the best results.
+                </p>
+                <a href="#" id="continueBtn" class="continue-btn">
+                    Continue to Identify Faces →
+                </a>
+                <p class="email-note" style="margin-top: 25px;">
+                    Redirecting automatically in <span id="countdown">5</span> seconds...
+                </p>
+            </div>
+
+            <!-- Error State -->
+            <div id="errorState" class="error-state">
+                <p>
+                    <strong>Taking longer than expected?</strong><br>
+                    Don't worry — we'll send you an email as soon as the analysis is complete. 
+                    You can safely close this page.
+                </p>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Celebrife LLC. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const uid = urlParams.get('uid');
+        const name = urlParams.get('name') || '';
+        const type = urlParams.get('type') || '';
+        const email = urlParams.get('email') || '';
+        const deceasedname = urlParams.get('deceasedname') || '';
+
+        // Configuration
+        const S3_BASE_URL = 'https://order-by-age-uploads.s3.amazonaws.com';
+        const FORM_BASE_URL = 'https://tjhurd711.github.io/face-identification-form/';
+        const POLL_INTERVAL = 10000; // 10 seconds
+        const MAX_POLL_TIME = 10 * 60 * 1000; // 10 minutes max
+        const EXPECTED_TIME = 5 * 60 * 1000; // 5 minutes expected
+
+        let pollStartTime = Date.now();
+        let pollCount = 0;
+        let isReady = false;
+
+        // Status messages to cycle through
+        const statusMessages = [
+            "Scanning for faces in your photos...",
+            "Grouping similar faces together...",
+            "Identifying frequently appearing people...",
+            "Analyzing face positions and sizes...",
+            "Building face clusters...",
+            "Almost there, finalizing results..."
+        ];
+
+        // Update progress bar and text
+        function updateProgress() {
+            const elapsed = Date.now() - pollStartTime;
+            const progress = Math.min((elapsed / EXPECTED_TIME) * 100, 95);
+            
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            // Update time estimate
+            const remainingMs = Math.max(EXPECTED_TIME - elapsed, 0);
+            const remainingMin = Math.ceil(remainingMs / 60000);
+            
+            if (remainingMin > 1) {
+                document.getElementById('timeEstimate').textContent = 
+                    `Estimated time remaining: ~${remainingMin} minutes`;
+            } else if (remainingMin === 1) {
+                document.getElementById('timeEstimate').textContent = 
+                    'Estimated time remaining: ~1 minute';
+            } else {
+                document.getElementById('timeEstimate').textContent = 
+                    'Almost ready...';
+            }
+
+            // Cycle status messages
+            const messageIndex = Math.min(
+                Math.floor((elapsed / EXPECTED_TIME) * statusMessages.length),
+                statusMessages.length - 1
+            );
+            document.getElementById('statusText').textContent = statusMessages[messageIndex];
+            
+            // Update progress text
+            if (progress < 30) {
+                document.getElementById('progressText').textContent = 'Analyzing photos...';
+            } else if (progress < 60) {
+                document.getElementById('progressText').textContent = 'Finding faces...';
+            } else if (progress < 90) {
+                document.getElementById('progressText').textContent = 'Grouping faces...';
+            } else {
+                document.getElementById('progressText').textContent = 'Finalizing...';
+            }
+        }
+
+        // Check if form data is ready
+        async function checkIfReady() {
+            if (!uid) {
+                console.error('No UID provided');
+                return false;
+            }
+
+            try {
+                const url = `${S3_BASE_URL}/face-form-data/${uid}/form_data.json`;
+                const response = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+                return response.ok;
+            } catch (error) {
+                console.log('Not ready yet:', error.message);
+                return false;
+            }
+        }
+
+        // Show ready state and redirect
+        function showReadyState() {
+            isReady = true;
+            
+            // Hide loading, show ready
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('readyState').classList.add('visible');
+            
+            // Build redirect URL
+            const formUrl = new URL(FORM_BASE_URL);
+            formUrl.searchParams.set('uid', uid);
+            
+            document.getElementById('continueBtn').href = formUrl.toString();
+            
+            // Countdown and auto-redirect
+            let countdown = 5;
+            const countdownEl = document.getElementById('countdown');
+            
+            const countdownInterval = setInterval(() => {
+                countdown--;
+                countdownEl.textContent = countdown;
+                
+                if (countdown <= 0) {
+                    clearInterval(countdownInterval);
+                    window.location.href = formUrl.toString();
+                }
+            }, 1000);
+        }
+
+        // Show error/timeout state
+        function showTimeoutState() {
+            document.getElementById('errorState').classList.add('visible');
+        }
+
+        // Main polling loop
+        async function poll() {
+            pollCount++;
+            const elapsed = Date.now() - pollStartTime;
+            
+            // Update progress
+            updateProgress();
+            
+            // Check if ready
+            const ready = await checkIfReady();
+            
+            if (ready) {
+                showReadyState();
+                return;
+            }
+            
+            // Check if max time exceeded
+            if (elapsed >= MAX_POLL_TIME) {
+                showTimeoutState();
+                return;
+            }
+            
+            // Continue polling
+            setTimeout(poll, POLL_INTERVAL);
+        }
+
+        // Initialize
+        if (!uid) {
+            document.getElementById('loadingState').innerHTML = `
+                <h1>Missing Order Information</h1>
+                <p class="subtitle">
+                    We couldn't find your order information. Please check your email for the correct link, 
+                    or contact support if you need assistance.
+                </p>
+            `;
+        } else {
+            // Start polling
+            poll();
+            
+            // Also update progress more frequently for smooth animation
+            setInterval(updateProgress, 1000);
+        }
+    </script>
+</body>
+</html>
