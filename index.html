@@ -383,7 +383,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="https://www.dropbox.com/scl/fi/i5ye9vg5wzfvxwyrwczq6/Untitled-940-x-600-px-1400-x-600-px.png?rlkey=rk5t9ot5gchvjcqx71lwiln1o&st=1kjskc34&raw=1" 
+            <img id="siteLogo"
+                 src="https://www.dropbox.com/scl/fi/i5ye9vg5wzfvxwyrwczq6/Untitled-940-x-600-px-1400-x-600-px.png?rlkey=rk5t9ot5gchvjcqx71lwiln1o&st=1kjskc34&raw=1" 
                  alt="MemorialVideo.AI" 
                  class="logo">
         </div>
@@ -479,6 +480,15 @@
         const type = urlParams.get('type') || '';
         const email = urlParams.get('email') || '';
         const deceasedname = urlParams.get('deceasedname') || '';
+
+        // Determine branding based on type
+        const isSortByAge = type && type.toLowerCase().includes('file');
+        
+        if (isSortByAge) {
+            document.getElementById('siteLogo').src = 'https://www.dropbox.com/scl/fi/22w5xw6t5keu6pa1cn8c5/Screenshot-2025-12-02-at-11.49.41-AM.png?rlkey=ev1s30l8q7dole5rd37i6z5xe&st=reqrcaww&raw=1';
+            document.getElementById('siteLogo').alt = 'SortByAge';
+            document.title = 'Finding Familiar Faces - SortByAge';
+        }
 
         // Configuration
         const S3_BASE_URL = 'https://order-by-age-uploads.s3.amazonaws.com';
