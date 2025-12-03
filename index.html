@@ -580,6 +580,9 @@
             // Build redirect URL
             const formUrl = new URL(FORM_BASE_URL);
             formUrl.searchParams.set('uid', uid);
+            if (type) {
+                formUrl.searchParams.set('type', type);
+            }
             
             document.getElementById('continueBtn').href = formUrl.toString();
             
